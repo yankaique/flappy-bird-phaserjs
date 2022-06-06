@@ -8,10 +8,16 @@ const config = {
   physics: {
     // Arcade physics plugin, manages physics simulation
     default: "arcade",
+    arcade: {
+      gravity: {
+        y: 200,
+      },
+    },
   },
   scene: {
     preload,
     create,
+    update,
   },
 };
 
@@ -24,13 +30,31 @@ function preload() {
 }
 
 let bird = null;
+let totalDelta = 0;
 
 function create() {
   // x, y, key
   this.add.image(0, 0, "sky").setOrigin(0, 0);
-  bird = this.add
+  bird = this.physics.add
     .sprite(config.width / 10, config.height / 2, "bird")
     .setOrigin(0);
+
+  // miiddle  of the height, 1/10 width
+  bird.body.gravity.y = 200;
+}
+
+// 60fps
+// 60 times per second
+// 60 * 16ms = 1000ms
+
+function update(time, delta) {
+  totalDelta += delta;
+
+  if (totalDelta < 1000) {
+    return;
+  }
+
+  totalDelta = 0;
 }
 
 new Phaser.Game(config);
