@@ -11,7 +11,7 @@ const config = {
     arcade: {
       debug: true,
       gravity: {
-        // y: 200,
+        y: 400,
       },
     },
   },
@@ -31,7 +31,7 @@ function preload() {
 }
 
 let bird = null;
-let totalDelta = null;
+let flapVelocity = 300;
 const velocity = 200;
 
 function create() {
@@ -42,7 +42,11 @@ function create() {
     .setOrigin(0);
 
   // miiddle  of the height, 1/10 width
-  bird.body.velocity.x = velocity;
+  // bird.body.velocity.x = velocity; 
+
+  this.input.on('pointerdown', flap)
+
+  this.input.keyboard.on('keydown_SPACE', flap)
 }
 
 // 60fps
@@ -50,12 +54,16 @@ function create() {
 // 60 * 16ms = 1000ms
 
 function update(time, delta) {
-  if (bird.x >= config.width - bird.width) {
-    bird.body.velocity.x = -velocity;
-  } else if (bird.x <= 0) {
-    bird.body.velocity.x = velocity;
-  }
-  console.log("oi");
+  // if (bird.x >= config.width - bird.width) {
+  //   bird.body.velocity.x = -velocity;
+  // } else if (bird.x <= 0) {
+  //   bird.body.velocity.x = velocity;
+  // }
+}
+
+function flap(){
+  bird.body.velocity.y = -velocity;
+
 }
 
 new Phaser.Game(config);
