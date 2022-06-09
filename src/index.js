@@ -9,8 +9,9 @@ const config = {
     // Arcade physics plugin, manages physics simulation
     default: "arcade",
     arcade: {
+      debug: true,
       gravity: {
-        y: 200,
+        // y: 200,
       },
     },
   },
@@ -30,7 +31,8 @@ function preload() {
 }
 
 let bird = null;
-let totalDelta = 0;
+let totalDelta = null;
+const velocity = 200;
 
 function create() {
   // x, y, key
@@ -40,7 +42,7 @@ function create() {
     .setOrigin(0);
 
   // miiddle  of the height, 1/10 width
-  bird.body.gravity.y = 200;
+  bird.body.velocity.x = velocity;
 }
 
 // 60fps
@@ -48,13 +50,12 @@ function create() {
 // 60 * 16ms = 1000ms
 
 function update(time, delta) {
-  totalDelta += delta;
-
-  if (totalDelta < 1000) {
-    return;
+  if (bird.x >= config.width - bird.width) {
+    bird.body.velocity.x = -velocity;
+  } else if (bird.x <= 0) {
+    bird.body.velocity.x = velocity;
   }
-
-  totalDelta = 0;
+  console.log("oi");
 }
 
 new Phaser.Game(config);
